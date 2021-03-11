@@ -9,5 +9,13 @@
         <module name="java-snippet" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="java-snippet" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="java-snippet" options="" />
+    </option>
   </component>
 </project>
