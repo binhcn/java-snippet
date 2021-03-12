@@ -1,0 +1,5 @@
+server.port: 8888
+spring:
+  cloud.config.server.native.searchLocations: file:///Users/lap14178/Documents/java-snippet/
+  profiles.active: native
+

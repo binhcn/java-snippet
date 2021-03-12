@@ -1,0 +1,28 @@
+welcome.message: Welcome to Spring cloud config server
+
+tpe-config:
+  clientId: 1
+  clientKey: abc123456
+  mode: grpc
+  poolSize: 16
+  rateLimit: 1000
+  grpcClient:
+    async: true
+    grpcHost: 10.60.45.55
+    grpcPort: 9714
+    useSsl: false
+    timeoutInSeconds: 5
+    poolSize: 16
+  httpClient:
+    url: https://loadtest.zalopay.com.vn/v001/tpe/
+    useProxy: false
+    timeout: 1000
+  methodNames:
+    getOrderInfo: zpi/getorderinfo
+  redisNodes:
+    - "redis://10.60.45.5:8000"
+    - "redis://10.60.45.5:8002"
+    - "redis://10.60.45.5:8004"
+    - "redis://10.60.45.5:8001"
+    - "redis://10.60.45.5:8003"
+    - "redis://10.60.45.5:8005"
