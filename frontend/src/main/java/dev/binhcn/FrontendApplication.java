@@ -20,8 +20,8 @@ public class FrontendApplication {
   public String helloWorld() throws UnknownHostException {
 
     RestTemplate restTemplate = new RestTemplate();
-//    String resourceUrl = "http://demo-backend:8080";
-    String resourceUrl = "http://localhost:8080";
+    String resourceUrl = "http://demo-backend:8080";
+//    String resourceUrl = "http://localhost:8080";
     ResponseEntity<String> response
         = restTemplate.getForEntity(resourceUrl, String.class);
     return "Message from backend is: " + response.getBody();

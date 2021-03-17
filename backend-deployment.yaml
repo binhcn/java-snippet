@@ -10,6 +10,7 @@ spec:
     - protocol: TCP
       port: 8080
   type: ClusterIP
+#  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -20,7 +21,7 @@ spec:
     matchLabels:
       app: demo-backend
       tier: backend
-  replicas: 3
+  replicas: 1
   template:
     metadata:
       labels:
