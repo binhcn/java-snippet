@@ -1,18 +1,31 @@
 package dev.binhcn.behavior.visitor;
 
-public class VisitorImpl implements Visitor {
- 
-    @Override
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+public class VisitorImpl extends Visitor {
+
+    public void visit(Book book) {
+        Method downPolymorphic = getMethod(book.getClass());
+        if (downPolymorphic == null) {
+            defaultVisit(book);
+        } else {
+            try {
+                downPolymorphic.invoke(this, book);
+            } catch (IllegalAccessException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void visit(BusinessBook a) {
         System.out.println(a.getPublisher());
     }
- 
-    @Override
+
     public void visit(DesignPatternBook w) {
         System.out.println(w.getBestSeller());
     }
- 
-    @Override
+
     public void visit(JavaCoreBook g) {
         System.out.println(g.getFavouriteBook());
     }

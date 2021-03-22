@@ -1,10 +1,31 @@
 package dev.binhcn.behavior.visitor;
 
-public interface Visitor {
+import java.lang.reflect.Method;
  
-    void visit(BusinessBook book);
+public abstract class Visitor {
+    public abstract void visit(Book book);
  
-    void visit(DesignPatternBook book);
+    protected Method getMethod(Class<?> clazz) {
+        while (!clazz.equals(Object.class)) { // Check superclasses
+            try {
+                return this.getClass().getDeclaredMethod("visit", clazz);
+            } catch (NoSuchMethodException ex) {
+                clazz = clazz.getSuperclass();
+            }
+        }
+        /* Should remove, no meaning */
+//        Class<?>[] interfaces = clazz.getInterfaces(); // Check interfaces
+//        for (Class<?> anInterface : interfaces) {
+//            try {
+//                return this.getClass().getDeclaredMethod("visit", anInterface);
+//            } catch (NoSuchMethodException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+        return null;
+    }
  
-    void visit(JavaCoreBook book);
+    protected void defaultVisit(Book book) {
+        System.out.println("A book");
+    }
 }
