@@ -59,56 +59,69 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
     }
 
     private List<String> getAutomaticContexts(String profile) {
-        Set<String> contexts = new LinkedHashSet<>();
+//        Set<String> contexts = new LinkedHashSet<>();
+
+        List<String> contexts = new ArrayList<>();
         // prefix + properties + defaultContext
-        String defaultContext = properties.getPrefix() + "/" + profile + properties.getProfileSeparator()
-                + properties.getDefaultContext() + "/";
+        String defaultContext = properties.getPrefix()
+            + properties.getProfileSeparator()
+            + properties.getName()
+            + properties.getProfileSeparator()
+            + profile + "/public"
+            + properties.getProfileSeparator()
+            + properties.getDataKey();
         defaultContext = defaultContext.replaceAll("//", "/");
         contexts.add(defaultContext);
 
         // prefix + properties + name
-        String nameContex = properties.getPrefix() + "/" + profile + properties.getProfileSeparator()
-                + properties.getName() + "/";
+        String nameContex = properties.getPrefix()
+            + properties.getProfileSeparator()
+            + properties.getName()
+            + properties.getProfileSeparator()
+            + profile + "/secret"
+            + properties.getProfileSeparator()
+            + properties.getDataKey();
         nameContex = nameContex.replaceAll("//", "/");
         contexts.add(nameContex);
+        return contexts;
 
-        List<String> filterContexts = new ArrayList<>();
-        List<String> hint = new ArrayList<>();
-        for (String context : contexts) {
-
-            if (this.properties.isLoadByVersion()) {
-                hint.add(context + version + "-<number>/" + this.properties.getDataKey());
-            }
-
-            hint.add(context + this.properties.getDataKey());
-            Response<List<String>> keysResp = this.consul.getKVKeysOnly(context + "/public/2.0.0-1/stable", "/", this.properties.getToken());
-            if (keysResp.getValue() == null) {
-                continue;
-            }
-            List<String> keys = keysResp.getValue();
-            if (keys.isEmpty()) {
-                continue;
-            }
-            Pattern patternWithVersion = Pattern.compile(context + version + "-[0-9]+/" + this.properties.getDataKey() + "$");
-            Pattern patternNoVersion = Pattern.compile(context + this.properties.getDataKey() + "$");
-            List<String> filterKeys = new ArrayList<>();
-            for (String key : keys) {
-                if (patternWithVersion.matcher(key).matches() || patternNoVersion.matcher(key).matches()) {
-                    filterKeys.add(key);
-                }
-            }
-            if (filterKeys.isEmpty()) {
-                continue;
-            }
-            Collections.sort(filterKeys);
-            filterContexts.add(filterKeys.get(filterKeys.size() - 1));
-        }
-
-        if (filterContexts.isEmpty()) {
-            throw new RemoteConfigNotFoundException("Remote config not found. Please check in : " + hint.toString());
-        }
-
-        return filterContexts;
+//        List<String> filterContexts = new ArrayList<>();
+//        List<String> hint = new ArrayList<>();
+//        for (String context : contexts) {
+//
+//            if (this.properties.isLoadByVersion()) {
+//                hint.add(context + version + "-<number>/" + this.properties.getDataKey());
+//            }
+//
+//            hint.add(context + this.properties.getDataKey());
+//            Response<List<String>> keysResp = this.consul.getKVKeysOnly(context, "/", this.properties.getToken());
+//            if (keysResp.getValue() == null) {
+//                continue;
+//            }
+//            List<String> keys = keysResp.getValue();
+//            if (keys.isEmpty()) {
+//                continue;
+//            }
+//            Pattern patternWithVersion = Pattern.compile(context + version + "-[0-9]+/" + this.properties.getDataKey() + "$");
+//            Pattern patternNoVersion = Pattern.compile(context + this.properties.getDataKey() + "$");
+//            List<String> filterKeys = new ArrayList<>();
+//            for (String key : keys) {
+//                if (patternWithVersion.matcher(key).matches() || patternNoVersion.matcher(key).matches()) {
+//                    filterKeys.add(key);
+//                }
+//            }
+//            if (filterKeys.isEmpty()) {
+//                continue;
+//            }
+//            Collections.sort(filterKeys);
+//            filterContexts.add(filterKeys.get(filterKeys.size() - 1));
+//        }
+//
+//        if (filterContexts.isEmpty()) {
+//            throw new RemoteConfigNotFoundException("Remote config not found. Please check in : " + hint.toString());
+//        }
+//
+//        return filterContexts;
     }
 
     private String getContext(String prefix, String context) {

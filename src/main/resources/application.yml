@@ -7,8 +7,8 @@ zalopay:
       name: cashier-v16
       enabled: true
       token: 1bfe383f-056e-44c2-7221-30928133e2c2
-      prefix: huyda1/test-app/nginx-backend
+      prefix: payment-engine/cashier
       data-key: stable
       format: YAML
       profile-separator: '/'
-      load-by-version: true
+      load-by-version: false
