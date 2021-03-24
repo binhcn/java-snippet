@@ -1,0 +1,6 @@
+consul:
+  endpoint: http://10.60.45.6:8500/v1
+  paths:
+    - payment-engine/cashier/cashier-v16/loadtest/public/stable
+    - payment-engine/cashier/cashier-v16/loadtest/secret/stable
+#    - payment-engine/cashier/cashier-v16/loadtest/stable
