@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 
+/** https://github.com/markramach/spring-boot-starter-consul */
 @SpringBootApplication
 @RequiredArgsConstructor
 public class Application {
