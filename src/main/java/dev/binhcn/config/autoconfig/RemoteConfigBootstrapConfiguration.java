@@ -46,7 +46,7 @@ public class RemoteConfigBootstrapConfiguration {
         if (properties.isLoadByVersion()) {
             version = getSourceCodeVersion();
         }
-        return new RemotePropertySourceLocator(consulClient, properties, version);
+            return new RemotePropertySourceLocator(consulClient, properties, version);
     }
 
     private String getSourceCodeVersion() throws IOException {
