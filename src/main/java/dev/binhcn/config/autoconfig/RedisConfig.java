@@ -1,12 +1,13 @@
 package dev.binhcn.config.autoconfig;
 
 import java.util.List;
+import javax.annotation.PostConstruct;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 @ConfigurationProperties(prefix = "redis")
-@Configuration
+@Component
 @Data
 public class RedisConfig {
 
@@ -29,4 +30,9 @@ public class RedisConfig {
   private int cacheExpireMinute;
   private int lockAcquireTimeMillisecond;
   private String codecType;
+
+  @PostConstruct
+  public void init() {
+    System.out.println();
+  }
 }

@@ -5,6 +5,8 @@ import dev.binhcn.config.RemotePropertySourceLocator;
 import dev.binhcn.config.properties.RemoteConfigProperties;
 import java.io.IOException;
 import java.util.Properties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -16,19 +18,13 @@ import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.StringUtils;
 
-/**
- * @author thainq
- */
 @Configuration
 @ConditionalOnProperty(name = "host", prefix = "zalopay.starter.remote-config")
-//@EnableConfigurationProperties(RemoteConfigProperties.class)
+@RequiredArgsConstructor
+@EnableConfigurationProperties(RemoteConfigProperties.class)
 public class RemoteConfigBootstrapConfiguration {
 
     private final RemoteConfigProperties properties;
-
-    public RemoteConfigBootstrapConfiguration(RemoteConfigProperties properties) {
-        this.properties = properties;
-    }
 
     @Bean
     @ConditionalOnMissingBean
