@@ -1,4 +1,4 @@
-package dev.binhcn.config.autoconfig;
+package dev.binhcn.git;
 
 import java.util.List;
 import javax.annotation.PostConstruct;

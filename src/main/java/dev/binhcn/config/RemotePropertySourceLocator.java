@@ -2,32 +2,33 @@ package dev.binhcn.config;
 
 import com.ecwid.consul.v1.ConsulClient;
 import dev.binhcn.config.properties.RemoteConfigProperties;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
+import java.util.Properties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.bootstrap.config.PropertySourceLocator;
 import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
-import org.springframework.util.StringUtils;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.EncodedResource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-/**
- * @author thainq
- */
+@EnableConfigurationProperties(RemoteConfigProperties.class)
 public class RemotePropertySourceLocator implements PropertySourceLocator {
 
     private static final String PROPERTIES_NAME = "consul";
 
     private final ConsulClient consul;
     private final RemoteConfigProperties properties;
-    private final String version;
 
-    public RemotePropertySourceLocator(ConsulClient consul, RemoteConfigProperties properties, String version) {
-        this.consul = consul;
+    public RemotePropertySourceLocator(RemoteConfigProperties properties) {
         this.properties = properties;
-        this.version = version;
+        this.consul = new ConsulClient(properties.getHost(), properties.getPort());
     }
 
     @Override
@@ -44,7 +45,8 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
 
             CompositePropertySource composite = new CompositePropertySource(PROPERTIES_NAME);
             for (String context : contexts) {
-                ConsulPropertySource propertySource = new ConsulPropertySource(context, this.consul, this.properties);
+                ConsulPropertySource propertySource =
+                    new ConsulPropertySource(context, this.consul, this.properties);
                 propertySource.init();
                 composite.addPropertySource(propertySource);
             }
@@ -57,7 +59,6 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
 //        Set<String> contexts = new LinkedHashSet<>();
 
         List<String> contexts = new ArrayList<>();
-        // prefix + properties + defaultContext
         String defaultContext = properties.getPrefix()
             + properties.getProfileSeparator()
             + properties.getName()
@@ -68,16 +69,15 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
         defaultContext = defaultContext.replaceAll("//", "/");
         contexts.add(defaultContext);
 
-        // prefix + properties + name
-        String nameContex = properties.getPrefix()
+        String secretPath = properties.getPrefix()
             + properties.getProfileSeparator()
             + properties.getName()
             + properties.getProfileSeparator()
             + profile + "/secret"
             + properties.getProfileSeparator()
             + properties.getDataKey();
-        nameContex = nameContex.replaceAll("//", "/");
-        contexts.add(nameContex);
+        secretPath = secretPath.replaceAll("//", "/");
+        contexts.add(secretPath);
         return contexts;
 
 //        List<String> filterContexts = new ArrayList<>();
@@ -119,16 +119,10 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
 //        return filterContexts;
     }
 
-    private String getContext(String prefix, String context) {
-        if (StringUtils.isEmpty(prefix)) {
-            return context;
-        }
-        return prefix + "/" + context;
-    }
-
-    private void addProfiles(Set<String> contexts, String baseContext, List<String> profiles, String suffix) {
-        for (String profile : profiles) {
-            contexts.add(baseContext + properties.getProfileSeparator() + profile + suffix);
-        }
+    private String getSourceCodeVersion() throws IOException {
+        Resource resource = new ClassPathResource("git.properties");
+        Properties props = new Properties();
+        PropertiesLoaderUtils.fillProperties(props, new EncodedResource(resource, "UTF-8"));
+        return props.getProperty("git.build.version");
     }
 }

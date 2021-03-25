@@ -3,7 +3,7 @@ zalopay:
     remote-config:
       host: 10.60.45.6
       port: 8500
-#      config:
+      scheme: http
       name: cashier-v16
       enabled: true
       token: 1bfe383f-056e-44c2-7221-30928133e2c2
