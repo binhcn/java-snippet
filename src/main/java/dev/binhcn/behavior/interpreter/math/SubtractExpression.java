@@ -1,12 +1,11 @@
 package dev.binhcn.behavior.interpreter.math;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class SubtractExpression implements Expression {
  
     private String expression;
- 
-    public SubtractExpression(String expression) {
-        this.expression = expression;
-    }
  
     @Override
     public int interpret(InterpreterEngineContext context) {
