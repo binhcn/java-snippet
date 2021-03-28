@@ -1,18 +1,18 @@
-package dev.binhcn.config.properties;
+package dev.binhcn.config;
 
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 @Data
-@ConfigurationProperties(prefix = "zalopay.starter.remote-config")
-public class RemoteConfigProperties {
-
+@ConfigurationProperties(prefix = "spring.cloud.consul.config")
+public class ConsulClientConfig {
+    @Value("${spring.cloud.consul.host}")
     private String host;
-    private String scheme;
+    @Value("${spring.cloud.consul.port}")
     private int port;
-    private String token;
+    private String aclToken;
     private String prefix;
-    private String defaultContext;
     private String profileSeparator;
     private Format format;
     private String dataKey;

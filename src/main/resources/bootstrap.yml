@@ -1,14 +1,22 @@
-zalopay:
-  starter:
-    remote-config:
+spring:
+  application:
+    name: myApp
+  cloud:
+    service-registry:
+      auto-registration:
+        enabled: false
+    consul:
       host: 10.60.45.6
       port: 8500
-      scheme: http
-      name: cashier-v16
-      enabled: true
-      token: 1bfe383f-056e-44c2-7221-30928133e2c2
-      prefix: payment-engine/cashier
-      data-key: stable
-      format: YAML
-      profile-separator: '/'
-      load-by-version: false
+      config:
+        name: cashier-v16
+        enabled: false
+        acl-token: 1bfe383f-056e-44c2-7221-30928133e2c2
+        prefix: payment-engine/cashier
+        data-key: stable
+        format: YAML
+        profile-separator: '/'
+        load-by-version: false
+        service-name: grpc-lt-cashier-integration-service
+        enable-client-loadBalance: false
+

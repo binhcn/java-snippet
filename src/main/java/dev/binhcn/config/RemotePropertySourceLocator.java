@@ -2,7 +2,6 @@ package dev.binhcn.config;
 
 import com.ecwid.consul.v1.ConsulClient;
 import com.ecwid.consul.v1.Response;
-import dev.binhcn.config.properties.RemoteConfigProperties;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,15 +20,15 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.EncodedResource;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 
-@EnableConfigurationProperties(RemoteConfigProperties.class)
+@EnableConfigurationProperties(ConsulClientConfig.class)
 public class RemotePropertySourceLocator implements PropertySourceLocator {
 
     private static final String PROPERTIES_NAME = "consul";
 
     private final ConsulClient consul;
-    private final RemoteConfigProperties properties;
+    private final ConsulClientConfig properties;
 
-    public RemotePropertySourceLocator(RemoteConfigProperties properties) {
+    public RemotePropertySourceLocator(ConsulClientConfig properties) {
         this.properties = properties;
         this.consul = new ConsulClient(properties.getHost(), properties.getPort());
     }
@@ -59,34 +58,31 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
     }
 
     private List<String> getAutomaticContexts(String profile) {
-        String profilePath = new StringBuilder()
-            .append(properties.getPrefix())
-            .append(properties.getProfileSeparator())
-            .append(properties.getName())
-            .append(properties.getProfileSeparator())
-            .append(profile)
-            .toString();
+        String profilePath = properties.getPrefix()
+            + properties.getProfileSeparator()
+            + properties.getName()
+            + properties.getProfileSeparator()
+            + profile;
         String publicConfig = getPublicConfigVersion(profilePath + "/public/");
 
         List<String> contexts = new ArrayList<>();
         String defaultContext = profilePath + "/public"
             + properties.getProfileSeparator()
             + publicConfig
-            + properties.getProfileSeparator()
             + properties.getDataKey();
-        defaultContext = defaultContext.replaceAll("//", "/");
         contexts.add(defaultContext);
 
-        String secretPath = profilePath + "/secret"
+        String secretContext = profilePath + "/secret"
             + properties.getProfileSeparator()
             + properties.getDataKey();
-        secretPath = secretPath.replaceAll("//", "/");
-        contexts.add(secretPath);
+        contexts.add(secretContext);
         return contexts;
     }
 
     private String getPublicConfigVersion(String context) {
-        Response<List<String>> keysResp = this.consul.getKVKeysOnly(context, "/", this.properties.getToken());
+        if (!properties.isLoadByVersion()) return "";
+        Response<List<String>> keysResp = this.consul.getKVKeysOnly(
+            context, "/", this.properties.getAclToken());
         if (keysResp.getValue() == null) {
             return null;
         }
@@ -105,7 +101,7 @@ public class RemotePropertySourceLocator implements PropertySourceLocator {
                 if (maxConfigVersion < configVersion) maxConfigVersion = configVersion;
             }
         }
-        return srcCodeVersion + "-" + maxConfigVersion;
+        return srcCodeVersion + "-" + maxConfigVersion + properties.getProfileSeparator();
     }
 
     private String getSrcCodeVersion() {
