@@ -16,7 +16,7 @@ spring:
         data-key: stable
         format: YAML
         profile-separator: '/'
-        load-by-version: false
+        load-by-version: true
         service-name: grpc-lt-cashier-integration-service
         enable-client-loadBalance: false
 
