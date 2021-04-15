@@ -1,1 +1,29 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/micro_db?useSSL=false
+    username: root
+    password: root
+    hikari:
+      connection-timeout: 20000
+      minimum-idle: 15
+      maximum-pool-size: 20
+      idle-timeout: 30000
+      max-lifetime: 50000
+      auto-commit: true
+  jpa:
+    hibernate.ddl-auto: create
+    show-sql: true
+    open-in-view: false
+    properties.hibernate:
+      jdbc.batch_size: 10
+      cache.use_second_level_cache: false
+      order_inserts: true
+      generate_statistics: true
+      dialect: org.hibernate.dialect.MySQL8Dialect
 
+logging.level:
+  ROOT: INFO
+  org:
+    hibernate.engine.transaction.internal.TransactionImpl: DEBUG
+    springframework.orm.jpa: DEBUG
