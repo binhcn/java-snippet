@@ -7,7 +7,9 @@ import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.core.instrument.distribution.DistributionStatisticConfig;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -49,10 +51,6 @@ public class Monitor {
     });
   }
 
-  public void record(String name, long startTime) {
-    record(name, Collections.emptyList(), startTime);
-  }
-
   /**
    * This method is used for record metric.
    *
@@ -60,12 +58,13 @@ public class Monitor {
    * @param tags represents tags
    * @param startTime represents start time
    */
-  public void record(String name, Iterable<Tag> tags, long startTime) {
+  public void record(String name, long startTime, Tag... tags) {
     try {
       if (startTime == 0) {
         return;
       }
-      registry.timer(name, tags).record(Duration.ofMillis(System.currentTimeMillis() - startTime));
+      List<Tag> tagList = Arrays.asList(tags);
+      registry.timer(name, tagList).record(Duration.ofMillis(System.currentTimeMillis() - startTime));
     } catch (Exception e) {
       log.error("Exception Occurs Timer On Metric Name {}", name, e);
     }

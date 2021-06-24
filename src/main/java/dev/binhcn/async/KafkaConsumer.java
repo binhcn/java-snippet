@@ -23,7 +23,7 @@ public class KafkaConsumer {
   public void consume(String messageStr, Acknowledgment acknowledgment) {
     try {
       KafkaMessage kafkaMessage = GsonUtil.fromJsonString(messageStr, KafkaMessage.class);
-      monitor.record("kafka", kafkaMessage.getStartTime());
+      monitor.record("KafkaConsumer", kafkaMessage.getStartTime());
       log.info("Demo Listener-consume message={}", messageStr);
       acknowledgment.acknowledge();
     } catch (Exception e) {

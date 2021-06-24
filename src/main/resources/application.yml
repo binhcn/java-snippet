@@ -6,7 +6,9 @@ management:
       metrics: types
     exposure.include: health, info, prometheus, metrics
   metrics.enable:
+    jvm: false
     http: false
+    spring.kafka: false
 
 monitor-config:
   enable: true
@@ -25,9 +27,19 @@ spring:
     retries: 3
     request-timeout: 60000
     retry-backoff: 1000
+  datasource:
+    url: jdbc:mysql://10.40.81.53:3306/payment_engine
+    #url: jdbc:mysql://10.50.1.53:3306/payment_engine
+    platform: mysql
+    username: loadtest
+    #username: dbgtest
+    password: abc@123
+    driverClassName: com.mysql.cj.jdbc.Driver
 
 kafka:
   demo:
     topic: JavaSnippet
     group-id: binhcn
     concurrency: 4
+
+
