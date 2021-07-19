@@ -6,6 +6,7 @@ import dev.binhcn.database.TransactionRepository;
 import dev.binhcn.entity.HttpReq;
 import dev.binhcn.entity.KafkaMessage;
 import dev.binhcn.util.Monitor;
+import io.micrometer.core.instrument.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -26,6 +27,6 @@ public class Processor {
     TransactionLog transactionLog = TransactionLog.getData();
     long startTime = System.currentTimeMillis();
     transactionRepository.save(transactionLog);
-    monitor.record("Processor", startTime);
+    monitor.record("Processor", startTime, Tag.of("method", "saveTransactionData"));
   }
 }

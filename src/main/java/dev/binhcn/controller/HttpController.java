@@ -31,8 +31,7 @@ public class HttpController {
 //    processor.sendKafkaMessage(httpReq);
     processor.saveTransactionData();
     HttpRes httpRes = new HttpRes(httpReq.getOrderToken());
-    monitor.record("HttpController", startTime,
-        Tag.of("service", "JavaSnippet"), Tag.of("method", "handleRequest"));
+    monitor.record("HttpController", startTime);
     return ResponseEntity.ok(GsonUtil.toJsonStringSnakeCase(httpRes));
   }
 }

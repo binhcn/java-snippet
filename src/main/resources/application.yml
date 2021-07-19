@@ -28,8 +28,8 @@ spring:
     request-timeout: 60000
     retry-backoff: 1000
   datasource:
-    url: jdbc:mysql://10.40.81.53:3306/payment_engine
-    #url: jdbc:mysql://10.50.1.53:3306/payment_engine
+    url: jdbc:mysql://10.40.81.53:3306/test
+    #url: jdbc:mysql://10.50.1.53:3306/test
     platform: mysql
     username: loadtest
     #username: dbgtest
