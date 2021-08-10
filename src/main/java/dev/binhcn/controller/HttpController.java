@@ -28,8 +28,8 @@ public class HttpController {
     long startTime = System.currentTimeMillis();
 
     HttpReq httpReq = GsonUtil.fromJsonSnakeCase(raw, HttpReq.class);
-//    processor.sendKafkaMessage(httpReq);
-    processor.saveTransactionData();
+    processor.sendKafkaMessage(httpReq);
+//    processor.saveTransactionData();
     HttpRes httpRes = new HttpRes(httpReq.getOrderToken());
     monitor.record("HttpController", startTime);
     return ResponseEntity.ok(GsonUtil.toJsonStringSnakeCase(httpRes));

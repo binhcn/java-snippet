@@ -22,17 +22,17 @@ monitor-config:
 
 spring:
   kafka:
-    bootstrap-servers: "10.60.45.50:9095,10.60.45.51:9095,10.60.45.52:9095"
+    bootstrap-servers: 10.60.45.50:9095,10.60.45.51:9095,10.60.45.52:9095
     acks: all
     retries: 3
     request-timeout: 60000
     retry-backoff: 1000
   datasource:
-    url: jdbc:mysql://10.40.81.53:3306/test
-    #url: jdbc:mysql://10.50.1.53:3306/test
+#    url: jdbc:mysql://10.40.81.53:3306/test
+    url: jdbc:mysql://10.50.1.53:3306/test
     platform: mysql
-    username: loadtest
-    #username: dbgtest
+#    username: loadtest
+    username: dbgtest
     password: abc@123
     driverClassName: com.mysql.cj.jdbc.Driver
 
