@@ -2,7 +2,7 @@
 
 - Chung
     - Luật ngủ: tự thống nhất thời gian, mức phạt
-    - Luật làm: 200k/lần (trong sài gòn), không thò tay, đưa miệng vô - 300k
+    - Luật làm: 200k/lần (trong sài gòn)
     - Chửi thề (văn viết lẫn văn nói), những từ không hay: - 100
         - éo, đéo
         - xưng hô anh em
